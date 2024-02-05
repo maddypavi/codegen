@@ -12,22 +12,20 @@ def translate_text(prompt):
         completion = gen.generate_text(
             model=model,
             prompt=prompt,
-            temperature=0.8,
-            max_output_tokens=500,
+            temperature=0.1,
+            max_output_tokens=300,
         )
         response = completion.result
         return response
     else:
         return "Not Found"
 
-iface = gr.Interface(
-    fn=translate_text,
-    inputs=gr.Textbox(placeholder="Enter text here..."), 
-    outputs=gr.Textbox(),  
-    live=True,  
-    title="CODE-GEN",  
-    description="Enter text and see the processed result.",  
-)
 
-# Launch the interface
+
+with gr.Blocks() as iface:
+    name = gr.Textbox(label="Name")
+    output = gr.Textbox(label="Output Box")
+    result_btn = gr.Button("result")
+    result_btn.click(fn=translate_text, inputs=name, outputs=output, api_name="submit")
+
 iface.launch(share=True)
